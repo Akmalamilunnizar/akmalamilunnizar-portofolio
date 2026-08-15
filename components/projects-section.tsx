@@ -1,9 +1,10 @@
 'use client'
 
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowUpRight, ImageIcon } from 'lucide-react'
-import { useLanguage } from '@/lib/i18n'
+import { useLanguage, getProjectSlug } from '@/lib/i18n'
 
 export function ProjectsSection() {
   const { t } = useLanguage()
@@ -30,7 +31,7 @@ export function ProjectsSection() {
           </div>
           <Link
             href="/projects"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-accent hover:bg-accent/10 hover:text-accent"
+            className="inline-flex text-red-400 items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-accent hover:bg-accent/10 hover:text-accent"
           >
             {t.projectsSection.viewAll}
             <ArrowUpRight className="h-4 w-4" />
@@ -39,18 +40,24 @@ export function ProjectsSection() {
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {t.projectsSection.items.map((project) => (
-            <div
+            <Link
               key={project.name}
-              className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-accent hover:shadow-lg hover:shadow-accent/5"
+              href={`/projects/${getProjectSlug(project)}`}
+              className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-accent hover:shadow-lg hover:shadow-accent/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
               {/* Thumbnail Container / Image Stock Placeholder */}
-              <div className="relative aspect-video w-full overflow-hidden bg-muted/60 border-b border-border">
-                {project.thumbnail ? (
+              <div className="relative aspect-video w-full overflow-hidden bg-muted/60 border-b border-border flex items-center justify-center p-2">
+                {typeof project.thumbnail === 'function' ? (
+                  (() => {
+                    const ThumbnailIcon = project.thumbnail as React.ComponentType<React.SVGProps<SVGSVGElement>>
+                    return <ThumbnailIcon className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105" preserveAspectRatio="xMidYMid meet" />
+                  })()
+                ) : project.thumbnail ? (
                   <Image
                     src={project.thumbnail}
                     alt={project.name}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="object-contain p-2 transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center text-muted-foreground bg-secondary/30">
@@ -85,7 +92,7 @@ export function ProjectsSection() {
                   ))}
                 </ul>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

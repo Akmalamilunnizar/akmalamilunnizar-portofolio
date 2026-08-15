@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import * as projects from '@/public/projects/projects'
 
 export type Locale = 'en' | 'id'
 
@@ -25,10 +26,21 @@ export type ExperienceItem = {
 }
 
 export type Project = {
+  slug?: string
   name: string
   description: string
+  longDescription?: string
   tags: string[]
-  thumbnail?: string
+  thumbnail?: string | React.ComponentType<React.SVGProps<SVGSVGElement>>
+  year?: string
+  role?: string
+  highlights?: string[]
+  liveUrl?: string
+  githubUrl?: string
+}
+
+export function getProjectSlug(project: { name: string; slug?: string }): string {
+  return project.slug || project.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
 
 type Dictionary = {
@@ -138,32 +150,76 @@ export const translations: Record<Locale, Dictionary> = {
       viewAll: 'View all projects →',
       items: [
         {
+          slug: 'citra-media-ecommerce-and-forecasting',
           name: 'Citra Media Ecommerce and Forecasting',
           description:
             'A scalable microservice ecosystem bridging a Laravel backend with a Python/Flask API. Features SARIMAX time-series forecasting, IoT hardware telemetry, and automated payment gateways.',
+          longDescription:
+            'Citra Media is an end-to-end e-commerce and inventory forecasting solution. Built with a distributed microservice architecture, it connects Laravel for business transactions and a Python/Flask engine powering statistical SARIMAX models to predict stock demands and minimize overstock/understock cycles.',
           tags: ['Laravel', 'Python', 'Flask', 'Machine Learning', 'RESTful API'],
           thumbnail: '',
+          year: '2025',
+          role: 'Fullstack & ML Engineer',
+          highlights: [
+            'Architected microservice sync between Laravel & Python Flask API',
+            'Implemented SARIMAX statistical modeling for sales forecasting',
+            'Integrated real-time IoT hardware telemetry & automated payment gateways',
+            'Constructed robust RESTful API with tokenized authentication',
+          ],
         },
         {
+          slug: 'sanke-intelligence-system',
           name: 'SANKE Intelligence System',
           description:
             'An IoT-based water quality monitoring system for Koi ponds. Built with Node.js and Laravel, utilizing Mamdani Fuzzy Logic to automatically evaluate real-time environmental metrics.',
+          longDescription:
+            'SANKE Intelligence System is a smart aquaculture monitoring solution for high-value Koi fish ecosystems. It ingests telemetry from submerged IoT sensors (pH, temperature, dissolved oxygen) and runs a Mamdani Fuzzy Logic inference engine on Node.js/Laravel to score pond health and trigger automated remediation devices.',
           tags: ["Node.js", "Laravel", "Flutter", "IoT"],
-          thumbnail: '',
+          thumbnail: projects.SankeIntellegenceSystem,
+          year: '2025',
+          role: 'IoT & Backend Lead',
+          highlights: [
+            'Built Mamdani Fuzzy Logic inference engine for real-time water scoring',
+            'Engineered low-latency telemetry ingestion pipeline with Node.js & MQTT',
+            'Developed cross-platform Flutter companion app with live alerts',
+            'Designed Laravel administrative portal with multi-pond analytics',
+          ],
         },
         {
+          slug: 'masroster-ecommerce-and-forecasting',
           name: 'MASROSTER Ecommerce and Forecasting',
           description:
             'An enterprise-level e-commerce backend integrated with predictive data pipelines using LSTM and Facebook Prophet for highly accurate inventory and time-series forecasting.',
+          longDescription:
+            'MASROSTER combines enterprise commerce workflows with deep learning predictive analytics. By leveraging LSTM recurrent neural networks and Facebook Prophet models, it accurately anticipates seasonal demand swings and automates supplier restocking recommendations.',
           tags: ['Laravel', 'Python', 'Flask', 'Machine Learning', 'RESTful API', 'Deep Learning'],
           thumbnail: '',
+          year: '2024',
+          role: 'Backend & ML Engineer',
+          highlights: [
+            'Trained LSTM and Facebook Prophet models on historical transactional datasets',
+            'Engineered high-throughput Laravel e-commerce catalog and ordering engine',
+            'Built automated data preprocessing and scheduled retraining pipelines',
+            'Delivered interactive visualization dashboard for business forecasts',
+          ],
         },
         {
+          slug: 'restorant',
           name: 'RestoranT',
           description:
             'A dual-platform ordering system seamlessly bridging a Flutter client application with a Laravel administrative dashboard to streamline real-time fulfillment workflows.',
+          longDescription:
+            'RestoranT modernizes restaurant order dispatch and kitchen management. Customers order through a fluid Flutter mobile app while kitchen and management staff track order states in real-time through an optimized Laravel dashboard with instant status dispatch.',
           tags: ["Flutter", "Laravel", "MySQL"],
           thumbnail: '',
+          year: '2024',
+          role: 'Mobile & Backend Developer',
+          highlights: [
+            'Developed Flutter mobile app with interactive menu & cart experience',
+            'Engineered real-time order state management with Laravel & WebSockets',
+            'Optimized relational MySQL schema for high concurrent table orders',
+            'Integrated receipt generation and thermal printer dispatch support',
+          ],
         },
       ],
     },
@@ -300,32 +356,76 @@ export const translations: Record<Locale, Dictionary> = {
       viewAll: 'Lihat semua proyek →',
       items: [
         {
+          slug: 'citra-media-ecommerce-and-forecasting',
           name: 'Citra Media Ecommerce and Forecasting',
           description:
             'Ekosistem microservice yang menghubungkan backend Laravel dengan Python/Flask API. Memiliki fitur peramalan deret waktu SARIMAX, telemetri IoT, dan gerbang pembayaran otomatis.',
+          longDescription:
+            'Citra Media adalah solusi e-commerce dan peramalan inventaris menyeluruh. Dibangun dengan arsitektur microservice terdistribusi, menghubungkan Laravel untuk transaksi bisnis dan Python/Flask untuk pemodelan statistik SARIMAX dalam memprediksi permintaan stok.',
           tags: ['Laravel', 'Python', 'Flask', 'Machine Learning', 'RESTful API'],
           thumbnail: '',
+          year: '2025',
+          role: 'Fullstack & ML Engineer',
+          highlights: [
+            'Merancang sinkronisasi microservice antara Laravel & Python Flask API',
+            'Mengimplementasikan model statistik SARIMAX untuk peramalan penjualan',
+            'Integrasi telemetri perangkat keras IoT & gerbang pembayaran otomatis',
+            'Membangun RESTful API tangguh dengan autentikasi berbasis token',
+          ],
         },
         {
+          slug: 'sanke-intelligence-system',
           name: 'SANKE Intelligence System',
           description:
             'Sistem pemantauan kualitas air berbasis IoT untuk kolam Koi. Dibuat dengan Node.js dan Laravel, memanfaatkan Logika Fuzzy Mamdani untuk mengevaluasi metrik lingkungan secara otomatis.',
+          longDescription:
+            'SANKE Intelligence System adalah solusi cerdas pemantauan akuakultur kolam ikan Koi. Mengambil telemetri dari sensor IoT (pH, suhu, DO) dan menjalankan mesin inferensi Logika Fuzzy Mamdani pada Node.js/Laravel untuk mengevaluasi kesehatan air.',
           tags: ["Node.js", "Laravel", "Flutter", "IoT"],
-          thumbnail: '',
+          thumbnail: projects.SankeIntellegenceSystem,
+          year: '2025',
+          role: 'IoT & Backend Lead',
+          highlights: [
+            'Membangun mesin inferensi Logika Fuzzy Mamdani untuk skor kualitas air realtime',
+            'Merancang pipeline telemetri latensi rendah dengan Node.js & MQTT',
+            'Mengembangkan aplikasi mobile Flutter dengan notifikasi peringatan instan',
+            'Membuat portal admin Laravel dengan analisis multi-kolam',
+          ],
         },
         {
+          slug: 'masroster-ecommerce-and-forecasting',
           name: 'MASROSTER Ecommerce and Forecasting',
           description:
             'Backend e-commerce tingkat enterprise terintegrasi dengan pipeline data prediktif LSTM dan Facebook Prophet untuk peramalan inventaris yang akurat.',
+          longDescription:
+            'MASROSTER menggabungkan workflow e-commerce enterprise dengan analitik prediktif deep learning. Memanfaatkan jaringan saraf berulang LSTM dan model Facebook Prophet untuk memprediksi fluktuasi permintaan musiman.',
           tags: ['Laravel', 'Python', 'Flask', 'Machine Learning', 'RESTful API', 'Deep Learning'],
           thumbnail: '',
+          year: '2024',
+          role: 'Backend & ML Engineer',
+          highlights: [
+            'Melatih model LSTM dan Facebook Prophet pada dataset transaksi historis',
+            'Membangun katalog dan mesin pemesanan e-commerce Laravel berkecepatan tinggi',
+            'Membuat pipeline prapemrosesan data otomatis dan pelatihan ulang terjadwal',
+            'Menyajikan dashboard visualisasi interaktif untuk peramalan bisnis',
+          ],
         },
         {
+          slug: 'restorant',
           name: 'RestoranT',
           description:
             'Sistem pemesanan dua platform yang menghubungkan aplikasi klien Flutter dengan dashboard administrasi Laravel.',
+          longDescription:
+            'RestoranT memodernisasi pemesanan restoran dan alur kerja dapur. Pelanggan memesan melalui aplikasi Flutter yang intuitif, sementara staf dapur mengelola status pesanan secara langsung melalui dashboard Laravel.',
           tags: ["Flutter", "Laravel", "MySQL"],
           thumbnail: '',
+          year: '2024',
+          role: 'Mobile & Backend Developer',
+          highlights: [
+            'Mengembangkan aplikasi mobile Flutter dengan antarmuka menu & keranjang interaktif',
+            'Membangun manajemen status pesanan realtime dengan Laravel & WebSockets',
+            'Optimasi skema relasional MySQL untuk volume pesanan tinggi',
+            'Integrasi pencetakan struk dan dukungan thermal printer',
+          ],
         },
       ],
     },

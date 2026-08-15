@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { ArrowLeft, ArrowUpRight, ImageIcon, Search, X, Layers, Code, Sparkles } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
-import { useLanguage } from '@/lib/i18n'
+import { useLanguage, getProjectSlug } from '@/lib/i18n'
 
 export default function ProjectsPage() {
   const { t } = useLanguage()
@@ -29,12 +29,12 @@ export default function ProjectsPage() {
       selectedCategory === 'All'
         ? true
         : selectedCategory === 'Machine Learning'
-        ? project.tags.some((t) => ['Machine Learning', 'Deep Learning', 'Flask', 'Python'].includes(t))
-        : selectedCategory === 'IoT'
-        ? project.tags.some((t) => ['IoT', 'Mamdan'].includes(t))
-        : selectedCategory === 'Mobile'
-        ? project.tags.includes('Flutter')
-        : project.tags.some((t) => ['Laravel', 'Node.js', 'RESTful API', 'MySQL'].includes(t))
+          ? project.tags.some((t) => ['Machine Learning', 'Deep Learning', 'Flask', 'Python'].includes(t))
+          : selectedCategory === 'IoT'
+            ? project.tags.some((t) => ['IoT', 'Mamdan'].includes(t))
+            : selectedCategory === 'Mobile'
+              ? project.tags.includes('Flutter')
+              : project.tags.some((t) => ['Laravel', 'Node.js', 'RESTful API', 'MySQL'].includes(t))
 
     return matchesSearch && matchesCategory
   })
@@ -58,95 +58,74 @@ export default function ProjectsPage() {
 
         {/* Hero Banner Section */}
         <header className="mt-8 mb-12">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 text-xs font-mono text-accent mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-3 py-1 font-mono text-xs text-accent">
             <Sparkles className="h-3.5 w-3.5" />
-            Selected Work 2024–2026
+            <span>PORTFOLIO SHOWCASE</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">
+          <h1 className="mt-4 text-3xl font-bold tracking-tight text-foreground md:text-5xl">
             {t.projectsSection.title}
           </h1>
-          <p className="mt-3 max-w-2xl text-base text-muted-foreground md:text-lg">
-            High-concurrency backend services, time-series forecasting pipelines, and smart IoT automation systems built with Go, Python & Laravel.
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg">
+            {t.projectsSection.subtitle}
           </p>
 
-          {/* Quick Metrics / Stats Bar */}
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            <div className="rounded-xl border border-border bg-card/60 p-4">
-              <span className="block text-2xl font-bold text-foreground">{projects.length}+</span>
-              <span className="text-xs text-muted-foreground">Production Builds</span>
+          {/* Quick Metrics Bar */}
+          <div className="mt-8 grid grid-cols-2 gap-4 rounded-xl border border-border bg-card/50 p-4 sm:grid-cols-4">
+            <div className="flex flex-col">
+              <span className="font-mono text-xs text-muted-foreground">TOTAL SHIPPED</span>
+              <span className="mt-1 text-2xl font-bold text-foreground">{projects.length}</span>
             </div>
-            <div className="rounded-xl border border-border bg-card/60 p-4">
-              <span className="block text-2xl font-bold text-accent">100%</span>
-              <span className="text-xs text-muted-foreground">Functional Telemetry</span>
+            <div className="flex flex-col">
+              <span className="font-mono text-xs text-muted-foreground">CORE DOMAINS</span>
+              <span className="mt-1 text-2xl font-bold text-foreground">4</span>
             </div>
-            <div className="col-span-2 sm:col-span-1 rounded-xl border border-border bg-card/60 p-4">
-              <span className="block text-2xl font-bold text-foreground">Go / Python / PHP</span>
-              <span className="text-xs text-muted-foreground">Core Architecture Stack</span>
+            <div className="col-span-2 sm:col-span-2 flex flex-col justify-center">
+              <span className="font-mono text-xs text-muted-foreground">TOP TECHNOLOGIES</span>
+              <span className="mt-1 truncate font-mono text-xs text-accent">{popularStack}</span>
             </div>
           </div>
         </header>
 
-        {/* Portfolio Atlas Control Section */}
-        <section className="mb-12 rounded-2xl border border-border bg-card/40 p-6 md:p-8">
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <div className="flex items-center gap-2">
-              <Layers className="h-4 w-4 text-accent" />
-              <h2 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                PORTFOLIO ATLAS & SEARCH
-              </h2>
-            </div>
+        {/* Search and Category Filter Section */}
+        <section className="mb-10 space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by project name, description, or stack (e.g., Laravel, IoT, Python)..."
+              className="w-full rounded-xl border border-border bg-card py-2.5 pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-12">
-            {/* Search Input */}
-            <div className="relative md:col-span-7">
-              <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search projects, technologies, or keywords..."
-                className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-9 text-sm text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
+          {/* Category Chips */}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1.5 mr-2 font-mono text-xs text-muted-foreground">
+              <Layers className="h-3.5 w-3.5" />
+              <span>CATEGORY:</span>
             </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2 md:col-span-5 md:justify-end">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`rounded-xl px-3.5 py-2 font-mono text-xs transition-all ${
-                    selectedCategory === cat
-                      ? 'bg-accent text-accent-foreground font-semibold shadow-sm'
-                      : 'border border-border bg-card text-muted-foreground hover:border-accent hover:text-foreground'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Dynamic Summary Bar */}
-          <div className="mt-6 flex flex-wrap items-center justify-between border-t border-border/60 pt-4 font-mono text-xs text-muted-foreground">
-            <div>
-              Matching Projects: <span className="font-semibold text-foreground">{filteredProjects.length}</span>
-            </div>
-            <div>
-              Active View: <span className="font-semibold text-accent">{selectedCategory}</span>
-            </div>
-            <div className="hidden sm:block">
-              Top Stack: <span className="font-semibold text-foreground">{popularStack}</span>
-            </div>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`rounded-full px-3.5 py-1 text-xs font-medium transition-all ${
+                  selectedCategory === cat
+                    ? 'bg-accent text-accent-foreground shadow-sm'
+                    : 'border border-border bg-card text-muted-foreground hover:border-accent/40 hover:text-foreground'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </section>
 
@@ -154,9 +133,10 @@ export default function ProjectsPage() {
         <div className="space-y-8">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
-              <div
+              <Link
                 key={project.name}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:border-accent hover:shadow-2xl hover:shadow-accent/5"
+                href={`/projects/${getProjectSlug(project)}`}
+                className="group relative block overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:border-accent hover:shadow-2xl hover:shadow-accent/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
               >
                 {/* Browser Frame Top Bar */}
                 <div className="flex items-center justify-between border-b border-border bg-secondary/40 px-4 py-3">
@@ -165,7 +145,7 @@ export default function ProjectsPage() {
                     <span className="h-3 w-3 rounded-full bg-amber-500/80" />
                     <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
                     <span className="ml-3 font-mono text-[11px] text-muted-foreground">
-                      PREVIEW FRAME // {project.name.toLowerCase().replace(/\s+/g, '-')}
+                      PREVIEW FRAME // {getProjectSlug(project)}
                     </span>
                   </div>
                   <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-accent" />
@@ -173,8 +153,13 @@ export default function ProjectsPage() {
 
                 <div className="grid gap-6 p-6 md:grid-cols-12 md:p-8">
                   {/* Left Column: Image Stock / Thumbnail Container */}
-                  <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted/50 md:col-span-5">
-                    {project.thumbnail ? (
+                  <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted/50 md:col-span-5 flex items-center justify-center p-2">
+                    {typeof project.thumbnail === 'function' ? (
+                      (() => {
+                        const ThumbnailIcon = project.thumbnail as React.ComponentType<React.SVGProps<SVGSVGElement>>
+                        return <ThumbnailIcon className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105" preserveAspectRatio="xMidYMid meet" />
+                      })()
+                    ) : project.thumbnail ? (
                       <Image
                         src={project.thumbnail}
                         alt={project.name}
@@ -230,7 +215,7 @@ export default function ProjectsPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))
           ) : (
             <div className="rounded-2xl border border-dashed border-border py-16 text-center">

@@ -45,21 +45,21 @@ export function ContactSection() {
     {
       name: 'LinkedIn',
       handle: 'akmal-amilunnizar',
-      url: 'www.linkedin.com/in/akmal-amilunnizar',
+      url: 'https://www.linkedin.com/in/akmal-amilunnizar',
       icon: LinkedinIcon,
       color: 'hover:text-[#0A66C2] hover:border-[#0A66C2]/40',
     },
     {
       name: 'GitHub',
       handle: 'Akmalamilunnizar',
-      url: 'https://github.https://github.com/Akmalamilunnizar',
+      url: 'https://github.com/Akmalamilunnizar',
       icon: GithubIcon,
       color: 'hover:text-foreground hover:border-foreground/40',
     },
     {
       name: 'Instagram',
       handle: '@jamaladenn',
-      url: 'https://instagram.com',
+      url: 'https://www.instagram.com/jamaladenn/',
       icon: InstagramIcon,
       color: 'hover:text-[#E4405F] hover:border-[#E4405F]/40',
     },
@@ -127,7 +127,7 @@ export function ContactSection() {
         <div className="mt-8 flex justify-end">
           <Link
             href="/contact"
-            className="inline-flex items-center gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-accent hover:bg-accent/10 hover:text-accent"
+            className="inline-flex items-center text-red-400 gap-1.5 rounded-full border border-border px-4 py-2 text-sm font-medium text-foreground transition-all hover:border-accent hover:bg-accent/10 hover:text-accent"
           >
             {t.contact.getInTouch}
             <ArrowUpRight className="h-4 w-4" />
