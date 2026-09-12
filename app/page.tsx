@@ -3,7 +3,6 @@ import { Hero } from '@/components/hero'
 import { AboutSection } from '@/components/about-section'
 import { ExperienceSection } from '@/components/experience-section'
 import { ProjectsSection } from '@/components/projects-section'
-import { FeaturedPosts } from '@/components/featured-posts'
 import { ContactSection } from '@/components/contact-section'
 import { SiteFooter } from '@/components/site-footer'
 
@@ -16,7 +15,6 @@ export default function Page() {
         <AboutSection />
         <ExperienceSection />
         <ProjectsSection />
-        <FeaturedPosts />
         <ContactSection />
       </main>
       <SiteFooter />

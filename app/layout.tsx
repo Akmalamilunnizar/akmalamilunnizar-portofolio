@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'Akmal Amilunnizar — Code & Coffee',
   description:
-    'Junior Backend Engineer & AI enthusiast. Essays on engineering, problem solving, and building things that last.',
+    'Backend Engineer & AI Enthusiast. Automating systems, integrating networks, and architecting databases.',
   generator: 'v0.app',
   icons: {
     icon: [

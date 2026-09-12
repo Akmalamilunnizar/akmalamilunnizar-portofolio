@@ -140,15 +140,16 @@ export const translations: Record<Locale, Dictionary> = {
       badge: 'Available for interesting problems',
       title: 'Backend Engineer & AI Enthusiast',
       bio: 'Backend Engineer specializing in system automation, network integrations, and efficient database architecture. Proficient in Go and PHP, with a proven track record of architecting end-to-end management systems from the ground up, including automated provisioning and hardware tracking. Skilled in deploying reliable, self-starting services via Docker Compose. Dedicated to building highly optimized, scalable backend solutions.',
-      readLatest: 'Read the latest',
+      readLatest: 'View Projects',
+      viewProjects: 'View Projects',
       moreAbout: 'More about me',
     },
     about: {
       title: 'About',
-      heading: 'Engineer at heart, writer by habit.',
+      heading: 'Building reliable and scalable backends.',
       paragraphs: [
-        'I have spent the last decade building products that people rely on every day — from high-traffic APIs to AI-powered tools that turn messy data into clear decisions.',
-        'My focus is on reliability and clarity: systems that are simple to reason about, easy to extend, and calm to operate. When I am not shipping, I am writing about the craft or mentoring other engineers.',
+        'I build software products and services that teams rely on every day — from high-concurrency APIs to AI-driven tools that turn complex data into actionable decisions.',
+        'My focus is on reliability, performance, and simplicity: systems that are easy to reason about, simple to extend, and rock-solid to operate. When I am not shipping, I am exploring distributed systems, experimenting with machine learning, or optimizing backend workflows.',
       ],
       skillsLabel: 'Tools I reach for',
       skills: ['Docker', 'Golang', 'PHP', 'Laravel', 'Vue.js', 'Nuxt.js', 'REST APIs', 'MySQL', 'Flutter', 'n8n', 'Github', 'Flask', 'Tensorflow', 'TypeScript', 'Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Machine Learning'],
@@ -182,7 +183,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: '/projects-image/cime/cime-produk.jpg',
           year: '2025',
           role: 'Fullstack & ML Engineer',
-          missionStatus: 'shipped',
+          missionStatus: 'completed',
           highlights: [
             'Architected microservice sync between Laravel & Python Flask API',
             'Implemented SARIMAX statistical modeling for sales forecasting',
@@ -312,7 +313,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: projects.SankeIntellegenceSystem,
           year: '2025',
           role: 'IoT & Backend Lead',
-          missionStatus: 'shipped',
+          missionStatus: 'completed',
           highlights: [
             'Built Mamdani Fuzzy Logic inference engine for real-time water scoring',
             'Engineered low-latency telemetry ingestion pipeline with Node.js & MQTT',
@@ -383,7 +384,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: '/projects-image/masroster/masroster-dashboard.jpg',
           year: '2024',
           role: 'Backend & ML Engineer',
-          missionStatus: 'completed',
+          missionStatus: 'in-progress',
           highlights: [
             'Trained LSTM and Facebook Prophet models on historical transactional datasets',
             'Engineered high-throughput Laravel e-commerce catalog and ordering engine',
@@ -571,7 +572,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: '/projects-image/elibrary-mobile/elibrary-mobile-thumbnail.jpg',
           year: '2024',
           role: 'Mobile Developer',
-          missionStatus: 'in-progress',
+          missionStatus: 'completed',
           highlights: [
             'Cross-platform mobile client with intuitive digital book catalog',
             'Real-time book reservation and pickup queue notifications',
@@ -706,16 +707,17 @@ export const translations: Record<Locale, Dictionary> = {
     hero: {
       badge: 'Tersedia untuk masalah menarik',
       title: 'Backend Engineer & Penggemar AI',
-      bio: 'Saya membangun sistem yang andal dan menulis tentang keahlian di baliknya — mulai dari merilis fitur AI yang tahan di produksi hingga kebiasaan tenang yang menjadikan rekayasa perangkat lunak sebagai permainan jangka panjang. Seimbang antara kode dan kopi.',
-      readLatest: 'Baca yang terbaru',
+      bio: 'Backend Engineer yang berspesialisasi dalam otomatisasi sistem, integrasi jaringan, dan arsitektur basis data yang efisien. Mahir dalam Go dan PHP, dengan pengalaman membangun sistem manajemen end-to-end, provisi otomatis, serta deployment layanan andal menggunakan Docker Compose.',
+      readLatest: 'Lihat Proyek',
+      viewProjects: 'Lihat Proyek',
       moreAbout: 'Selengkapnya tentang saya',
     },
     about: {
       title: 'Tentang',
-      heading: 'Insinyur sejati, penulis karena kebiasaan.',
+      heading: 'Membangun sistem backend yang andal dan terukur.',
       paragraphs: [
-        'Selama satu dekade terakhir saya membangun produk yang diandalkan orang setiap hari — mulai dari API berlalu lintas tinggi hingga alat bertenaga AI yang mengubah data berantakan menjadi keputusan yang jelas.',
-        'Fokus saya adalah keandalan dan kejelasan: sistem yang mudah dipahami, mudah dikembangkan, dan tenang untuk dioperasikan. Saat tidak sedang merilis, saya menulis tentang keahlian ini atau membimbing insinyur lain.',
+        'Saya membangun produk dan layanan perangkat lunak yang diandalkan setiap hari — mulai dari API berthroughput tinggi hingga integrasi kecerdasan buatan untuk otomatisasi alur kerja.',
+        'Fokus saya adalah keandalan, performa, dan kesederhanaan arsitektur: sistem yang mudah dipahami, mudah dikembangkan, dan stabil saat dioperasikan. Saat tidak sedang merilis fitur, saya mengeksplorasi sistem terdistribusi, bereksperimen dengan machine learning, atau mengoptimalkan alur kerja backend.',
       ],
       skillsLabel: 'Alat yang saya andalkan',
       skills: ['Docker', 'Golang', 'PHP', 'Laravel', 'Vue.js', 'Nuxt.js', 'REST APIs', 'MySQL', 'Flutter', 'n8n', 'Github', 'Flask', 'Tensorflow', 'TypeScript', 'Next.js', 'Node.js', 'Python', 'PostgreSQL', 'Machine Learning'],
@@ -749,7 +751,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: '/projects-image/cime/cime-produk.jpg',
           year: '2025',
           role: 'Fullstack & ML Engineer',
-          missionStatus: 'shipped',
+          missionStatus: 'completed',
           highlights: [
             'Merancang sinkronisasi microservice antara Laravel & Python Flask API',
             'Mengimplementasikan model statistik SARIMAX untuk peramalan penjualan',
@@ -879,7 +881,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: projects.SankeIntellegenceSystem,
           year: '2025',
           role: 'IoT & Backend Lead',
-          missionStatus: 'shipped',
+          missionStatus: 'completed',
           highlights: [
             'Membangun mesin inferensi Logika Fuzzy Mamdani untuk skor kualitas air realtime',
             'Merancang pipeline telemetri latensi rendah dengan Node.js & MQTT',
@@ -950,7 +952,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: '/projects-image/masroster/masroster-dashboard.jpg',
           year: '2024',
           role: 'Backend & ML Engineer',
-          missionStatus: 'completed',
+          missionStatus: 'in-progress',
           highlights: [
             'Melatih model LSTM dan Facebook Prophet pada dataset transaksi historis',
             'Membangun katalog dan mesin pemesanan e-commerce Laravel berkecepatan tinggi',
@@ -1138,7 +1140,7 @@ export const translations: Record<Locale, Dictionary> = {
           thumbnail: '/projects-image/elibrary-mobile/elibrary-mobile-thumbnail.jpg',
           year: '2024',
           role: 'Mobile Developer',
-          missionStatus: 'in-progress',
+          missionStatus: 'completed',
           highlights: [
             'Klien mobile multiplatform dengan katalog buku digital yang intuitif',
             'Reservasi buku real-time dan notifikasi antrean pengambilan',
