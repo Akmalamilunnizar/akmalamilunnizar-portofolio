@@ -1,6 +1,6 @@
 'use client'
 
-import { use } from 'react'
+import { use, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -15,10 +15,16 @@ import {
   Sparkles,
   ExternalLink,
   ImageIcon,
+  Swords,
+  Trophy,
+  Activity,
+  Maximize2,
+  X,
+  FileText,
 } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
-import { useLanguage, getProjectSlug, Project } from '@/lib/i18n'
+import { useLanguage, getProjectSlug, Project, ProjectChallenge, ProjectVisualLog } from '@/lib/i18n'
 
 function GithubIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -36,14 +42,12 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const resolvedParams = use(params)
   const { slug } = resolvedParams
   const { t, locale } = useLanguage()
+  const [selectedVisualLog, setSelectedVisualLog] = useState<ProjectVisualLog | null>(null)
 
   const projects = t.projectsSection.items
-  const currentIndex = projects.findIndex(
-    (p) => getProjectSlug(p) === slug
-  )
+  const currentIndex = projects.findIndex((p) => getProjectSlug(p) === slug)
   const project: Project | undefined = projects[currentIndex]
 
-  // Next and Previous projects for footer navigation
   const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null
   const nextProject =
     currentIndex >= 0 && currentIndex < projects.length - 1
@@ -80,6 +84,13 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
     )
   }
 
+  const missionStatusText =
+    project.missionStatus === 'shipped'
+      ? locale === 'id' ? 'Status Misi: Telah Dirilis' : 'Mission Status: Shipped'
+      : project.missionStatus === 'completed'
+        ? locale === 'id' ? 'Status Misi: Selesai' : 'Mission Status: Completed'
+        : locale === 'id' ? 'Status Misi: Berjalan' : 'Mission Status: In-Progress'
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
@@ -92,19 +103,46 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
             className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-accent"
           >
             <ArrowLeft className="h-4 w-4" />
-            {locale === 'id' ? 'Kembali ke Proyek' : 'Back to Projects'}
+            {locale === 'id' ? 'Kembali ke Daftar Proyek' : 'Return to Quest Log'}
           </Link>
 
           <span className="font-mono text-xs text-muted-foreground">
-            PROJECT // {getProjectSlug(project)}
+            LOG // {getProjectSlug(project)}
           </span>
         </div>
 
-        {/* Project Header Hero */}
+        {/* Hero Banner Section */}
         <header className="mt-8 space-y-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-3 py-1 font-mono text-xs text-accent">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>FEATURED SHOWCASE</span>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 font-mono text-xs uppercase tracking-wider text-primary">
+              <Activity className="h-3.5 w-3.5" />
+              <span>{missionStatusText}</span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-mono text-foreground transition-colors hover:border-accent hover:text-accent"
+                >
+                  <GithubIcon className="h-3.5 w-3.5" />
+                  <span>Repository</span>
+                </a>
+              )}
+              {project.liveUrl && (
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-accent/40 bg-accent/10 px-3 py-1.5 text-xs font-mono text-accent transition-colors hover:bg-accent hover:text-accent-foreground"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Live System</span>
+                </a>
+              )}
+            </div>
           </div>
 
           <h1 className="text-3xl font-extrabold tracking-tight text-foreground md:text-5xl">
@@ -115,7 +153,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
             {project.description}
           </p>
 
-          {/* Metadata Pill Grid */}
+          {/* Quick Metrics Bar */}
           <div className="mt-6 grid grid-cols-2 gap-3 border-y border-border py-4 sm:grid-cols-4">
             {project.year && (
               <div className="flex items-center gap-2.5">
@@ -171,43 +209,19 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
           </div>
         </header>
 
-        {/* Showcase Image / Visual Presentation Frame */}
-        <section className="mt-10 overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-accent/5">
-          {/* Top Browser Bar */}
+        {/* Hero Viewport / Visual Preview Frame */}
+        <section className="mt-8 overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-accent/5">
           <div className="flex items-center justify-between border-b border-border bg-secondary/40 px-4 py-3">
             <div className="flex items-center gap-2">
               <span className="h-3 w-3 rounded-full bg-destructive/80" />
               <span className="h-3 w-3 rounded-full bg-amber-500/80" />
               <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
               <span className="ml-3 font-mono text-xs text-muted-foreground">
-                https://portfolio.local/showcase/{getProjectSlug(project)}
+                PREVIEW // {getProjectSlug(project)}
               </span>
-            </div>
-            <div className="flex items-center gap-2">
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-accent transition-colors"
-                >
-                  <GithubIcon className="h-4 w-4" />
-                </a>
-              )}
-              {project.liveUrl && (
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-accent transition-colors"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                </a>
-              )}
             </div>
           </div>
 
-          {/* Media Viewport */}
           <div className="relative aspect-video w-full overflow-hidden bg-muted/40 flex items-center justify-center p-4 md:p-8">
             {typeof project.thumbnail === 'function' ? (
               (() => {
@@ -233,7 +247,7 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
                 </div>
                 <div className="max-w-sm">
                   <span className="block font-semibold text-sm text-foreground">
-                    {locale === 'id' ? 'Tampilan Pratinjau Proyek' : 'Project Architecture & Preview'}
+                    {locale === 'id' ? 'Pratinjau Sistem Terpadu' : 'Unified System Preview'}
                   </span>
                   <span className="font-mono text-xs text-muted-foreground mt-1 block">
                     {project.name}
@@ -244,44 +258,182 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
           </div>
         </section>
 
-        {/* Detailed Content Grid */}
-        <section className="mt-12 grid gap-10 md:grid-cols-12">
-          {/* Main Content Column */}
-          <div className="space-y-8 md:col-span-8">
-            {/* Overview / Deep Dive */}
-            <div>
-              <h2 className="text-xl font-bold tracking-tight text-foreground">
-                {locale === 'id' ? 'Gambaran Umum Proyek' : 'Project Overview'}
-              </h2>
-              <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+        {/* Two-Column Detail Layout */}
+        <div className="mt-12 grid gap-10 lg:grid-cols-12">
+          {/* Main Content (Left Column) */}
+          <div className="space-y-12 lg:col-span-8">
+            {/* Mission Briefing / Overview */}
+            <section id="overview">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="rounded-lg bg-card border border-border p-2">
+                  <FileText className="h-5 w-5 text-accent" />
+                </div>
+                <h2 className="text-xl font-bold tracking-tight text-foreground">
+                  {locale === 'id' ? 'Briefing Misi (Overview)' : 'Mission Briefing'}
+                </h2>
+              </div>
+              <p className="text-base leading-relaxed text-muted-foreground">
                 {project.longDescription || project.description}
               </p>
-            </div>
+            </section>
 
-            {/* Key Engineering Highlights */}
-            {project.highlights && project.highlights.length > 0 && (
-              <div>
-                <h2 className="text-xl font-bold tracking-tight text-foreground">
-                  {locale === 'id' ? 'Fitur & Keunggulan Rekayasa' : 'Key Engineering Highlights'}
-                </h2>
-                <div className="mt-4 grid gap-3">
-                  {project.highlights.map((highlight, i) => (
+            {/* Boss Battles / Challenges Section */}
+            {project.challenges && project.challenges.length > 0 && (
+              <section id="challenges">
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-2 text-red-400">
+                    <Swords className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold tracking-tight text-foreground">
+                      {locale === 'id' ? 'Tantangan Utama (Boss Battles)' : 'Boss Battles (Challenges)'}
+                    </h2>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {locale === 'id' ? 'Hambatan arsitektur & rekayasa teknis' : 'Technical & architectural roadblocks solved'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {project.challenges.map((challenge: ProjectChallenge, index: number) => (
                     <div
-                      key={i}
-                      className="flex items-start gap-3 rounded-xl border border-border bg-card/60 p-4 transition-colors hover:border-accent/40"
+                      key={index}
+                      className="group rounded-xl border border-border bg-card/70 p-5 transition-all hover:border-accent/40 hover:bg-card"
                     >
-                      <CheckCircle2 className="h-5 w-5 shrink-0 text-accent mt-0.5" />
-                      <span className="text-sm leading-relaxed text-foreground/90">{highlight}</span>
+                      <div className="flex items-center gap-2.5">
+                        <span
+                          className={`h-2.5 w-2.5 rounded-full ${
+                            challenge.severity === 'high' ? 'bg-red-500 animate-pulse' : 'bg-amber-500'
+                          }`}
+                        />
+                        <h3 className="text-base font-semibold text-foreground group-hover:text-accent transition-colors">
+                          {challenge.title}
+                        </h3>
+                      </div>
+                      <p className="mt-2.5 pl-5 text-sm leading-relaxed text-muted-foreground">
+                        {challenge.description}
+                      </p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
+            )}
+
+            {/* Achievements Unlocked Section */}
+            {project.achievements && project.achievements.length > 0 && (
+              <section id="achievements">
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="rounded-lg bg-yellow-500/10 border border-yellow-500/20 p-2 text-yellow-400">
+                    <Trophy className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold tracking-tight text-foreground">
+                      {locale === 'id' ? 'Pencapaian (Achievements Unlocked)' : 'Achievements Unlocked'}
+                    </h2>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {locale === 'id' ? 'Hasil akhir & kapabilitas yang terverifikasi' : 'Verified system outcomes & milestone deliveries'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {project.achievements.map((item, index) => {
+                    const text = typeof item === 'string' ? item : item.title
+                    return (
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 rounded-xl border border-border bg-card/60 p-4 transition-all hover:border-accent/40"
+                      >
+                        <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-400 mt-0.5" />
+                        <span className="text-sm leading-relaxed text-foreground/90 font-medium">{text}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
+            )}
+
+            {/* Visual Logs Section */}
+            {project.visualLogs && project.visualLogs.length > 0 && (
+              <section id="visual-logs">
+                <div className="mb-6 flex items-center gap-3">
+                  <div className="rounded-lg bg-primary/10 border border-primary/20 p-2 text-primary">
+                    <ImageIcon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold tracking-tight text-foreground">
+                      {locale === 'id' ? 'Log Visual (Visual Logs)' : 'Visual Logs'}
+                    </h2>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {locale === 'id' ? 'Tangkapan layar modul & alur kerja sistem' : 'Modular screenshots & architecture telemetry breakdown'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {project.visualLogs.map((log: ProjectVisualLog, index: number) => (
+                    <div
+                      key={index}
+                      onClick={() => setSelectedVisualLog(log)}
+                      className="group cursor-pointer overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:border-accent hover:shadow-lg hover:shadow-accent/5"
+                    >
+                      {/* Visual Header Mockup */}
+                      <div className="relative aspect-video w-full overflow-hidden bg-muted/40 border-b border-border flex items-center justify-center">
+                        {log.image ? (
+                          <>
+                            <Image
+                              src={log.image}
+                              alt={log.title}
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-40 group-hover:opacity-10 transition-opacity" />
+                          </>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center gap-2 p-4 text-muted-foreground group-hover:text-accent transition-colors">
+                            <div className="rounded-full bg-background p-3 shadow-inner border border-border group-hover:border-accent/40">
+                              <Sparkles className="h-5 w-5 text-accent" />
+                            </div>
+                            <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                              {log.tag || 'DIAGNOSTIC LOG'}
+                            </span>
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          className="absolute right-3 top-3 z-10 rounded-lg border border-border bg-background/80 p-1.5 text-muted-foreground opacity-0 transition-all group-hover:opacity-100 hover:text-accent"
+                          aria-label="Expand Log"
+                        >
+                          <Maximize2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+
+                      {/* Log Info */}
+                      <div className="p-4">
+                        <div className="flex items-center justify-between gap-2">
+                          <h3 className="text-sm font-semibold text-foreground group-hover:text-accent transition-colors">
+                            {log.title}
+                          </h3>
+                          {log.tag && (
+                            <span className="rounded-md border border-accent/20 bg-accent/10 px-2 py-0.5 font-mono text-[10px] text-accent">
+                              {log.tag}
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                          {log.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
             )}
           </div>
 
           {/* Right Sidebar Column */}
-          <div className="space-y-6 md:col-span-4">
-            {/* Tech Stack Box */}
+          <div className="space-y-6 lg:col-span-4">
+            {/* Tech Stack Card */}
             <div className="rounded-2xl border border-border bg-card p-6">
               <h3 className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-muted-foreground">
                 <Code2 className="h-4 w-4 text-accent" />
@@ -299,26 +451,103 @@ export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
               </ul>
             </div>
 
-            {/* Quick Action / Contact card */}
+            {/* Engineering Highlights */}
+            {project.highlights && project.highlights.length > 0 && (
+              <div className="rounded-2xl border border-border bg-card p-6">
+                <h3 className="font-mono text-xs uppercase tracking-wider text-muted-foreground mb-4">
+                  {locale === 'id' ? 'Ringkasan Rekayasa' : 'Engineering Highlights'}
+                </h3>
+                <ul className="space-y-3">
+                  {project.highlights.map((highlight, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-xs text-muted-foreground leading-relaxed">
+                      <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Quick Action / Contact Card */}
             <div className="rounded-2xl border border-accent/20 bg-accent/5 p-6">
               <h3 className="font-semibold text-foreground">
-                {locale === 'id' ? 'Tertarik dengan proyek ini?' : 'Interested in this work?'}
+                {locale === 'id' ? 'Tertarik dengan proyek ini?' : 'Interested in this project?'}
               </h3>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
                 {locale === 'id'
-                  ? 'Mari berdiskusi tentang bagaimana teknologi serupa dapat diterapkan pada kebutuhan sistem Anda.'
-                  : 'Let’s discuss how similar distributed architectures or ML pipelines can solve your technical challenges.'}
+                  ? 'Diskusikan arsitektur serupa atau integrasikan solusi khusus untuk sistem Anda.'
+                  : 'Let’s discuss how similar distributed architectures or ML forecasting can solve your engineering problems.'}
               </p>
               <Link
                 href="/contact"
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2 text-xs font-semibold text-accent-foreground shadow-sm transition-all hover:bg-accent/90"
+                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-xs font-semibold text-accent-foreground shadow-sm transition-all hover:bg-accent/90"
               >
                 <span>{locale === 'id' ? 'Hubungi Saya' : 'Get in Touch'}</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
-        </section>
+        </div>
+
+        {/* Modal Lightbox for Visual Log */}
+        {selectedVisualLog && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur-sm"
+            onClick={() => setSelectedVisualLog(null)}
+          >
+            <div
+              className="relative w-full max-w-3xl rounded-2xl border border-border bg-card p-6 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-border pb-4">
+                <div>
+                  <span className="font-mono text-[11px] text-accent uppercase">{selectedVisualLog.tag}</span>
+                  <h3 className="text-lg font-bold text-foreground">{selectedVisualLog.title}</h3>
+                </div>
+                <button
+                  onClick={() => setSelectedVisualLog(null)}
+                  className="rounded-lg border border-border p-1.5 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="relative mt-4 aspect-video w-full overflow-hidden rounded-xl border border-border bg-muted/30 flex items-center justify-center">
+                {selectedVisualLog.image ? (
+                  <Image
+                    src={selectedVisualLog.image}
+                    alt={selectedVisualLog.title}
+                    fill
+                    className="object-contain p-2"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2 p-6 text-center">
+                    <div className="rounded-full bg-card p-4 border border-border">
+                      <ImageIcon className="h-8 w-8 text-accent" />
+                    </div>
+                    <span className="text-sm font-semibold text-foreground">{selectedVisualLog.title}</span>
+                    <span className="font-mono text-xs text-muted-foreground max-w-md">
+                      {selectedVisualLog.description}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                {selectedVisualLog.description}
+              </div>
+
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => setSelectedVisualLog(null)}
+                  className="rounded-xl border border-border bg-secondary/50 px-4 py-2 text-xs font-mono text-foreground hover:border-accent"
+                >
+                  Close Log
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Footer Next/Prev Project Navigation */}
         <section className="mt-16 border-t border-border pt-8">
